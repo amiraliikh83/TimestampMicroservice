@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timestamp Microservice</title>
+</head>
+<body>
+  <h1>Timestamp Microservice</h1>
+  <p>Enter a date or a Unix timestamp below:</p>
+  <input type="text" id="input-date" placeholder="Enter date or Unix timestamp">
+  <button onclick="getTimestamp()">Get Timestamp</button>
+  <div id="result">
+    <p id="unix-result"></p>
+    <p id="utc-result"></p>
+  </div>
+
+  <script>
+    function getTimestamp() {
+      const inputDate = document.getElementById('input-date').value;
+      const resultDiv = document.getElementById('result');
+      
+      fetch(`/api/timestamp/${inputDate}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+          } else {
+            document.getElementById('unix-result').textContent = `Unix Timestamp: ${data.unix}`;
+            document.getElementById('utc-result').textContent = `UTC Date: ${data.utc}`;
+          }
+        });
+    }
+  </script>
+</body>
+</html>
